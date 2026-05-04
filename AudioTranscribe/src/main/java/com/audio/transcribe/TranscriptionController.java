@@ -18,7 +18,7 @@ public class TranscriptionController {
 
     private final OpenAiAudioTranscriptionModel transcriptionModel;
 
-    
+
     public TranscriptionController(OpenAiAudioTranscriptionModel transcriptionModel) {
         this.transcriptionModel = transcriptionModel;
     }
@@ -44,22 +44,21 @@ public class TranscriptionController {
             System.out.println("Temp path: " + tempFile.getAbsolutePath());
             System.out.println("File size: " + tempFile.length());
 
-            
+          
             OpenAiAudioTranscriptionOptions options =
                     OpenAiAudioTranscriptionOptions.builder()
                             .language("en")
                             .temperature(0f)
                             .build();
 
-            
+           
             FileSystemResource audioFile = new FileSystemResource(tempFile);
 
             AudioTranscriptionPrompt request =
                     new AudioTranscriptionPrompt(audioFile, options);
 
             
-            AudioTranscriptionResponse response =
-                    transcriptionModel.call(request);
+            AudioTranscriptionResponse response = transcriptionModel.call(request);
 
             String result = response.getResult().getOutput();
 
@@ -68,11 +67,11 @@ public class TranscriptionController {
             return ResponseEntity.ok(result);
 
         } catch (Exception e) {
-            e.printStackTrace(); // VERY IMPORTANT for debugging
+            e.printStackTrace(); 
             return ResponseEntity.status(500)
                     .body("Error: " + e.getMessage());
         } finally {
-
+            
             if (tempFile != null && tempFile.exists()) {
                 tempFile.delete();
             }
